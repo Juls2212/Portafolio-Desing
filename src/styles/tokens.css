@@ -1,0 +1,89 @@
+/*
+ * Design tokens: the single source of truth for color, type, shadow and scene
+ * values. Values come from the approved prototype
+ * (design-reference/extracted-zip/Portafolio Juliana Peñafiel.html).
+ *
+ * `@theme static` makes Tailwind generate utilities (bg-background,
+ * text-text-muted, font-display, ...) AND always emit the matching CSS
+ * variables (--color-background, ...) on :root, so components can use either.
+ *
+ * Palette rules:
+ *  - near-white (text) is only for text, lines and structure, never large fills;
+ *  - black is never dominant: burgundy (background) dominates;
+ *  - red is an accent.
+ */
+
+@theme static {
+  /* Reset Tailwind's defaults so only project tokens exist. */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Square corners everywhere. */
+  --radius-none: 0px;
+
+  /* Surfaces */
+  --color-background: #25151e; /* burgundy-dark, dominant */
+  --color-surface-deep: #111117;
+  --color-surface-raised: #1c1017;
+  --color-panel-tint: #311a27;
+
+  /* Text */
+  --color-text: #f4f1ef;
+  --color-text-muted: #c9b5be;
+  --color-text-dim: #8e7a84;
+
+  /* Accent */
+  --color-red: #e63b49;
+  --color-red-bright: #f0606c;
+
+  /* Hairlines and borders (red at the alphas the prototype uses) */
+  --color-hairline-faint: rgb(230 59 73 / 0.14);
+  --color-hairline: rgb(230 59 73 / 0.22);
+  --color-divider: rgb(230 59 73 / 0.25);
+  --color-border-soft: rgb(230 59 73 / 0.4);
+  --color-border-panel: rgb(230 59 73 / 0.45);
+  --color-border-strong: rgb(230 59 73 / 0.6);
+  --color-border-screen: rgb(230 59 73 / 0.75);
+  --color-border-neutral: rgb(244 241 239 / 0.35);
+
+  /* Red washes used inside panels */
+  --color-red-wash: rgb(230 59 73 / 0.08);
+  --color-red-wash-strong: rgb(230 59 73 / 0.12);
+
+  /* Glow shadows */
+  --shadow-glow-panel: 0 0 70px rgb(230 59 73 / 0.14), inset 0 0 50px rgb(230 59 73 / 0.06);
+  --shadow-glow-soft: 0 0 60px rgb(230 59 73 / 0.2);
+  --shadow-glow-screen: 0 0 90px rgb(230 59 73 / 0.28);
+}
+
+/* Fonts: the CSS variables are defined by next/font in src/lib/fonts.ts. */
+@theme inline {
+  --font-display: var(--font-instrument-serif), "Times New Roman", serif;
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+/* Scene tokens (prototype values). Consumed by the Phase 2+ scene components. */
+:root {
+  --scene-perspective: 1300px;
+  --scene-perspective-origin: 50% 44%;
+  --scene-floor-grid: 96px;
+  --scene-floor-rotate-x: 80deg;
+  --scene-screen-rotate-x: 74deg;
+  --stack-perspective: 1700px;
+  --stack-tilt: 54deg;
+  --header-height: 64px;
+}
+
+/*
+ * ALT palette (master-brief reference). INACTIVE: kept only for reference.
+ * To try it, replace the values above; nothing else needs to change.
+ *
+ *   background      #241B23
+ *   surface-deep    #111115
+ *   graphite        #38363D
+ *   red             #C92D42
+ *   red-bright      #FF4A5D
+ *   text            #F5F3F2
+ */
