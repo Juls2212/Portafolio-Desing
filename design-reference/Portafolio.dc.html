@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+html{background:#25151E}
+body{margin:0;background:#25151E;color:#F4F1EF;font-family:'Geist',system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+*{box-sizing:border-box}
+a{color:#F4F1EF;text-decoration:none}
+a:hover{color:#F0606C}
+::selection{background:#E63B49;color:#111117}
+:focus-visible{outline:2px solid #F0606C;outline-offset:3px}
+input,textarea,button{font:inherit}
+input::placeholder,textarea::placeholder{color:#8E7A84}
+</style>
+</helmet>
+
+<a href="#sobre-mi" onClick="{{ skipIntro }}" style="position:fixed;left:16px;top:-60px;z-index:80;padding:10px 16px;background:#E63B49;color:#111117;font-weight:600;font-size:14px" style-focus="top:12px;color:#111117">Saltar al contenido</a>
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:60;height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(16px,3vw,40px);background:rgba(17,17,23,0.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(230,59,73,0.22)">
+  <a href="#inicio" onClick="{{ goTop }}" aria-label="Juliana Peñafiel, ir al inicio" style="display:flex;align-items:center;gap:12px;color:#F4F1EF" style-hover="color:#F4F1EF">
+    <span style="width:34px;height:34px;border:1px solid #E63B49;display:grid;place-items:center;font-family:'Geist Mono',monospace;font-size:12px;color:#F0606C">JP</span>
+    <span style="font-size:14px;font-weight:500;letter-spacing:.01em;white-space:nowrap">Juliana Peñafiel</span>
+  </a>
+  <sc-if value="{{ showLinks }}" hint-placeholder-val="{{ true }}">
+    <nav aria-label="Principal">
+      <ul style="display:flex;gap:2px;list-style:none;margin:0;padding:0">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+          <li><a href="#{{ n.id }}" onClick="{{ n.go }}" aria-current="{{ n.current }}" style="display:block;padding:8px 12px;font-size:13px;letter-spacing:.01em;color:{{ n.color }};border-bottom:1px solid {{ n.line }};transition:color .2s,border-color .2s" style-hover="color:#F4F1EF">{{ n.label }}</a></li>
+        </sc-for>
+      </ul>
+    </nav>
+  </sc-if>
+  <div style="display:flex;align-items:center;gap:14px">
+    <span style="display:flex;align-items:center;gap:8px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE;white-space:nowrap"><span style="width:6px;height:6px;background:#E63B49;transform:rotate(45deg)"></span>{{ levelLabel }}</span>
+    <sc-if value="{{ inIntro }}" hint-placeholder-val="{{ true }}">
+      <button type="button" onClick="{{ skipIntro }}" style="height:36px;padding:0 14px;background:transparent;border:1px solid rgba(230,59,73,.6);color:#F4F1EF;font-size:13px;cursor:pointer;white-space:nowrap;transition:background .2s" style-hover="background:rgba(230,59,73,.16)">Saltar intro →</button>
+    </sc-if>
+    <sc-if value="{{ showMenuBtn }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuExpanded }}" aria-controls="menu-movil" style="height:36px;padding:0 14px;background:transparent;border:1px solid rgba(244,241,239,.35);color:#F4F1EF;font-size:13px;cursor:pointer">{{ menuLabel }}</button>
+    </sc-if>
+  </div>
+  <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:-1px;height:1px;overflow:hidden"><div ref="{{ r.bar }}" style="height:1px;background:#E63B49;transform-origin:0 50%;transform:scaleX(0)"></div></div>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <nav id="menu-movil" aria-label="Menú móvil" style="position:fixed;top:64px;left:0;right:0;bottom:0;z-index:55;background:#111117;padding:32px 24px;overflow:auto;border-top:1px solid rgba(230,59,73,.3)">
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+        <li style="border-bottom:1px solid rgba(230,59,73,.2)"><a href="#{{ n.id }}" onClick="{{ n.go }}" style="display:flex;align-items:baseline;gap:16px;padding:18px 0;font-family:'Instrument Serif',serif;font-size:40px;line-height:1;color:{{ n.color }}"><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#F0606C">{{ n.num }}</span>{{ n.label }}</a></li>
+      </sc-for>
+    </ul>
+  </nav>
+</sc-if>
+
+<sc-if value="{{ spatial }}" hint-placeholder-val="{{ true }}">
+  <section id="inicio" ref="{{ r.level1 }}" aria-label="Nivel 01, sala de presentación" style="position:relative;height:340vh">
+    <div style="position:sticky;top:0;height:100vh;overflow:hidden;perspective:1300px;perspective-origin:50% 44%;background:radial-gradient(120% 85% at 50% 32%,#311A27 0%,#25151E 46%,#170D13 100%)">
+      <div aria-hidden="true" style="position:absolute;top:0;bottom:0;left:11%;width:1px;background:linear-gradient(180deg,transparent,rgba(230,59,73,.16) 30%,rgba(230,59,73,.16) 70%,transparent)"></div>
+      <div aria-hidden="true" style="position:absolute;top:0;bottom:0;right:11%;width:1px;background:linear-gradient(180deg,transparent,rgba(230,59,73,.16) 30%,rgba(230,59,73,.16) 70%,transparent)"></div>
+      <div ref="{{ r.floor }}" aria-hidden="true" style="position:absolute;left:50%;top:64%;width:320vw;height:150vh;transform:translateX(-50%) rotateX(80deg);transform-origin:50% 0;background-image:linear-gradient(rgba(230,59,73,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(230,59,73,.16) 1px,transparent 1px);background-size:96px 96px;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 35%,transparent 75%);mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 35%,transparent 75%)"></div>
+
+      <sc-if value="{{ showHud }}" hint-placeholder-val="{{ true }}">
+        <div aria-hidden="true" style="position:absolute;top:88px;left:clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#C9B5BE"><span style="color:#F0606C">SALA HOLOGRÁFICA</span><span>NIVEL 01 / 02</span></div>
+        <div aria-hidden="true" style="position:absolute;top:88px;right:clamp(20px,3vw,40px);display:flex;flex-direction:column;gap:6px;align-items:flex-end;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#C9B5BE"><span>PORTAFOLIO · JP</span><span>PROTOTIPO v0.1</span></div>
+        <div aria-hidden="true" style="position:absolute;bottom:24px;left:clamp(20px,3vw,40px);display:flex;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#C9B5BE"><span>ENTRADA</span><span ref="{{ r.pct }}" style="color:#F0606C">000</span><span>%</span></div>
+        <div aria-hidden="true" style="position:absolute;bottom:24px;right:clamp(20px,3vw,40px);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#C9B5BE">X 00.00 · Y 04.61 · Z −12.08</div>
+      </sc-if>
+
+      <div ref="{{ r.scene }}" style="position:absolute;left:50%;top:45%;width:0;height:0;transform-style:preserve-3d">
+        <article ref="{{ r.p0 }}" aria-labelledby="hero-title" style="position:absolute;left:0;top:0;width:560px;transform:translate(-50%,-50%) translate3d(-70px,-40px,0px);padding:24px 34px 34px;background:linear-gradient(180deg,rgba(230,59,73,.12),rgba(230,59,73,.03) 60%,rgba(17,17,23,.4));border:1px solid rgba(230,59,73,.6);box-shadow:0 0 70px rgba(230,59,73,.14),inset 0 0 50px rgba(230,59,73,.06)">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:16px;height:16px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-top:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;bottom:-2px;left:-2px;width:16px;height:16px;border-bottom:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+          <div style="display:flex;justify-content:space-between;padding-bottom:14px;margin-bottom:26px;border-bottom:1px solid rgba(230,59,73,.25);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span>P/01 — PRESENTACIÓN</span><span style="color:#F0606C">JP·01</span></div>
+          <p style="margin:0 0 10px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C">HOLA, SOY</p>
+          <h1 id="hero-title" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:92px;line-height:.9;letter-spacing:-.015em;color:#F4F1EF">Juliana<br><em style="color:#E63B49">Peñafiel</em></h1>
+          <p style="margin:24px 0 0;font-size:14px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#F4F1EF">Desarrolladora de software</p>
+          <p style="margin:10px 0 0;font-size:17px;line-height:1.55;color:#C9B5BE;max-width:42ch;text-wrap:pretty">Construyo experiencias digitales interactivas donde el código, el diseño y el movimiento trabajan juntos.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:28px">
+            <a href="#" onClick="{{ cv }}" style="display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 20px;background:#E63B49;border:1px solid #E63B49;color:#111117;font-size:14px;font-weight:600;letter-spacing:.02em;transition:background .2s" style-hover="background:#F0606C;color:#111117">Descargar CV <span aria-hidden="true">↓</span></a>
+            <a href="#proyectos" onClick="{{ goProjects }}" style="display:inline-flex;align-items:center;height:46px;padding:0 20px;border:1px solid rgba(244,241,239,.35);color:#F4F1EF;font-size:14px;font-weight:500;transition:border-color .2s" style-hover="border-color:#E63B49;color:#F4F1EF">Ver proyectos</a>
+          </div>
+        </article>
+
+        <article ref="{{ r.p1 }}" aria-labelledby="p2-title" style="position:absolute;left:0;top:0;width:340px;transform:translate(-50%,-50%) translate3d(450px,-150px,-140px) rotateY(-20deg);padding:22px 26px 26px;background:linear-gradient(180deg,rgba(230,59,73,.09),rgba(17,17,23,.35));border:1px solid rgba(230,59,73,.45)">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:12px;height:12px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+          <div style="display:flex;justify-content:space-between;padding-bottom:12px;margin-bottom:18px;border-bottom:1px solid rgba(230,59,73,.25);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span id="p2-title">P/02 — SOBRE MÍ</span><span style="color:#F0606C">◇</span></div>
+          <p style="margin:0;font-family:'Instrument Serif',serif;font-size:26px;line-height:1.2;color:#F4F1EF;text-wrap:pretty">Me interesa crear interfaces que se sientan como lugares: claras, rápidas y con intención.</p>
+          <p style="margin:14px 0 0;font-size:14px;line-height:1.55;color:#C9B5BE">[Añade aquí una breve descripción personal: qué te motiva y cómo trabajas.]</p>
+          <a href="#sobre-mi" onClick="{{ goAbout }}" style="display:inline-flex;gap:8px;margin-top:18px;font-size:13px;color:#F4F1EF;border-bottom:1px solid #E63B49;padding-bottom:3px" style-hover="color:#F0606C">Leer más <span aria-hidden="true">→</span></a>
+        </article>
+
+        <article ref="{{ r.p2 }}" aria-labelledby="p3-title" style="position:absolute;left:0;top:0;width:300px;transform:translate(-50%,-50%) translate3d(-540px,50px,-200px) rotateY(22deg);padding:22px 24px 14px;background:linear-gradient(180deg,rgba(230,59,73,.08),rgba(17,17,23,.35));border:1px solid rgba(230,59,73,.42)">
+          <span aria-hidden="true" style="position:absolute;top:-2px;right:-2px;width:12px;height:12px;border-top:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;bottom:-2px;left:-2px;width:12px;height:12px;border-bottom:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <div style="display:flex;justify-content:space-between;padding-bottom:12px;margin-bottom:6px;border-bottom:1px solid rgba(230,59,73,.25);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span id="p3-title">P/03 — INTERESES</span><span style="color:#F0606C">04</span></div>
+          <ol style="list-style:none;margin:0;padding:0">
+            <li style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(230,59,73,.14);font-size:15px"><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#F0606C;padding-top:3px">01</span>Experiencias interactivas</li>
+            <li style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(230,59,73,.14);font-size:15px"><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#F0606C;padding-top:3px">02</span>Realidad virtual y simulación</li>
+            <li style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid rgba(230,59,73,.14);font-size:15px"><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#F0606C;padding-top:3px">03</span>Aplicaciones con IA</li>
+            <li style="display:flex;gap:14px;padding:12px 0;font-size:15px"><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#F0606C;padding-top:3px">04</span>Interfaces para wearables</li>
+          </ol>
+        </article>
+      </div>
+
+      <div ref="{{ r.screen }}" style="position:absolute;left:50%;top:50%;width:1100px;height:462px;transform:translate(-50%,-50%) translate3d(0,33vh,0) rotateX(74deg);background-color:#111117;border:1px solid rgba(230,59,73,.75);box-shadow:0 0 90px rgba(230,59,73,.28);overflow:hidden">
+        <div ref="{{ r.screenGrid }}" aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(230,59,73,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(230,59,73,.18) 1px,transparent 1px);background-size:56px 56px;background-position:center"></div>
+        <div ref="{{ r.screenA }}" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:24px">
+          <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.2em;color:#F0606C">PANTALLA DE ACCESO · NIVEL 02</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:64px;line-height:1;color:#F4F1EF">Entrar al portafolio</span>
+          <span style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#C9B5BE"><span>PROYECTOS</span><span>STACK</span><span>TRAYECTORIA</span><span>TESTIMONIOS</span><span>CONTACTO</span></span>
+        </div>
+        <div ref="{{ r.screenB }}" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;padding:24px;opacity:0">
+          <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.2em;color:#F0606C">NIVEL 02 · INTERFAZ PRINCIPAL</span>
+          <span style="font-family:'Instrument Serif',serif;font-size:clamp(48px,7vw,104px);line-height:.95;color:#F4F1EF">Has entrado al<br><em style="color:#E63B49">espacio de trabajo</em></span>
+          <span style="font-size:14px;color:#C9B5BE">Sigue desplazándote para explorar</span>
+        </div>
+      </div>
+
+      <div ref="{{ r.hint }}" aria-hidden="true" style="position:absolute;left:50%;bottom:20px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.18em;color:#C9B5BE"><span>DESPLÁZATE PARA ENTRAR</span><span style="width:1px;height:26px;background:linear-gradient(#E63B49,transparent)"></span></div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ simple }}" hint-placeholder-val="{{ false }}">
+  <section id="inicio" aria-label="Nivel 01, presentación" style="position:relative;padding:100px 20px 56px;background:radial-gradient(140% 70% at 50% 0%,#311A27 0%,#25151E 55%,#1C1017 100%);overflow:hidden">
+    <div aria-hidden="true" style="position:absolute;left:0;right:0;bottom:0;height:45%;background-image:linear-gradient(rgba(230,59,73,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(230,59,73,.12) 1px,transparent 1px);background-size:44px 44px;-webkit-mask-image:linear-gradient(180deg,transparent,#000);mask-image:linear-gradient(180deg,transparent,#000)"></div>
+    <div style="position:relative;max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:16px">
+      <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#F0606C">SALA HOLOGRÁFICA · NIVEL 01</span>
+      <article data-reveal="1" aria-labelledby="hero-title-m" style="position:relative;padding:22px 22px 26px;background:linear-gradient(180deg,rgba(230,59,73,.12),rgba(17,17,23,.35));border:1px solid rgba(230,59,73,.6)">
+        <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+        <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+        <div style="display:flex;justify-content:space-between;padding-bottom:12px;margin-bottom:20px;border-bottom:1px solid rgba(230,59,73,.25);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span>P/01 — PRESENTACIÓN</span><span style="color:#F0606C">JP·01</span></div>
+        <h1 id="hero-title-m" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,15vw,84px);line-height:.9;letter-spacing:-.015em">Juliana<br><em style="color:#E63B49">Peñafiel</em></h1>
+        <p style="margin:20px 0 0;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase">Desarrolladora de software</p>
+        <p style="margin:8px 0 0;font-size:16px;line-height:1.55;color:#C9B5BE;text-wrap:pretty">Construyo experiencias digitales interactivas donde el código, el diseño y el movimiento trabajan juntos.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:22px">
+          <a href="#" onClick="{{ cv }}" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px;background:#E63B49;color:#111117;font-size:14px;font-weight:600" style-hover="background:#F0606C;color:#111117">Descargar CV <span aria-hidden="true">↓</span></a>
+          <a href="#proyectos" onClick="{{ goProjects }}" style="display:inline-flex;align-items:center;height:48px;padding:0 20px;border:1px solid rgba(244,241,239,.35);color:#F4F1EF;font-size:14px" style-hover="color:#F4F1EF;border-color:#E63B49">Ver proyectos</a>
+        </div>
+      </article>
+      <div style="display:flex;flex-wrap:wrap;gap:16px">
+        <article data-reveal="1" style="flex:1 1 260px;min-width:0;padding:20px;border:1px solid rgba(230,59,73,.42);background:rgba(17,17,23,.35)">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE;padding-bottom:10px;margin-bottom:14px;border-bottom:1px solid rgba(230,59,73,.25)">P/02 — SOBRE MÍ</div>
+          <p style="margin:0;font-family:'Instrument Serif',serif;font-size:24px;line-height:1.2">Me interesa crear interfaces que se sientan como lugares: claras, rápidas y con intención.</p>
+        </article>
+        <article data-reveal="1" style="flex:1 1 260px;min-width:0;padding:20px;border:1px solid rgba(230,59,73,.42);background:rgba(17,17,23,.35)">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE;padding-bottom:10px;margin-bottom:6px;border-bottom:1px solid rgba(230,59,73,.25)">P/03 — INTERESES</div>
+          <p style="margin:0;font-size:15px;line-height:2;color:#F4F1EF">Experiencias interactivas · Realidad virtual y simulación · Aplicaciones con IA · Interfaces para wearables</p>
+        </article>
+      </div>
+      <div ref="{{ r.screenM }}" style="margin-top:20px;position:relative;padding:40px 20px;border:1px solid rgba(230,59,73,.7);background-color:#111117;background-image:linear-gradient(rgba(230,59,73,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(230,59,73,.16) 1px,transparent 1px);background-size:40px 40px;background-position:center;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;transform-origin:50% 100%;box-shadow:0 0 60px rgba(230,59,73,.2)">
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.18em;color:#F0606C">PANTALLA DE ACCESO · NIVEL 02</span>
+        <span style="font-family:'Instrument Serif',serif;font-size:40px;line-height:1">Entrar al portafolio</span>
+        <a href="#sobre-mi" onClick="{{ goAbout }}" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;border:1px solid #E63B49;color:#F4F1EF;font-size:14px;background:rgba(230,59,73,.12)" style-hover="color:#F4F1EF;background:rgba(230,59,73,.25)">Entrar <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<main id="contenido" style="position:relative;background:#25151E">
+
+  <section id="sobre-mi" aria-labelledby="t-about" style="padding:clamp(96px,12vw,160px) clamp(20px,5vw,64px) clamp(72px,9vw,120px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C"><span>01</span><span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(230,59,73,.6),rgba(230,59,73,0))"></span><span style="color:#C9B5BE">SOBRE MÍ</span></div>
+      <h2 id="t-about" style="margin:0 0 clamp(40px,6vw,72px);font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,7vw,96px);line-height:.95;letter-spacing:-.01em">Código con <em style="color:#E63B49">sentido de lugar</em></h2>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,72px);align-items:flex-start">
+        <div data-reveal="1" style="flex:0 1 380px;min-width:0;width:100%;position:relative;aspect-ratio:4/5;border:1px solid rgba(230,59,73,.4);background-color:#1C1017;background-image:repeating-linear-gradient(135deg,rgba(230,59,73,.08) 0 2px,transparent 2px 12px);display:grid;place-items:center">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:16px;height:16px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+          <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">[ RETRATO · 4:5 ]</span>
+        </div>
+        <div style="flex:1 1 420px;min-width:0;display:flex;flex-direction:column;gap:28px">
+          <p style="margin:0;font-family:'Instrument Serif',serif;font-size:clamp(26px,3vw,38px);line-height:1.2;text-wrap:pretty">Soy desarrolladora de software interesada en construir experiencias digitales interactivas: interfaces, simulaciones y aplicaciones que se sienten tangibles.</p>
+          <p style="margin:0;font-size:17px;line-height:1.65;color:#C9B5BE;max-width:60ch">[Escribe aquí tu historia: cómo empezaste a programar, qué tipo de problemas disfrutas resolver y qué estás aprendiendo ahora.]</p>
+          <dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid rgba(230,59,73,.25)">
+            <div style="padding:18px 0;border-bottom:1px solid rgba(230,59,73,.25)"><dt style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C;margin-bottom:6px">ENFOQUE</dt><dd style="margin:0;font-size:16px">Experiencias interactivas</dd></div>
+            <div style="padding:18px 0;border-bottom:1px solid rgba(230,59,73,.25)"><dt style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C;margin-bottom:6px">UBICACIÓN</dt><dd style="margin:0;font-size:16px;color:#C9B5BE">[Ciudad, País]</dd></div>
+            <div style="padding:18px 0;border-bottom:1px solid rgba(230,59,73,.25)"><dt style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C;margin-bottom:6px">IDIOMAS</dt><dd style="margin:0;font-size:16px;color:#C9B5BE">[Idiomas]</dd></div>
+            <div style="padding:18px 0;border-bottom:1px solid rgba(230,59,73,.25)"><dt style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C;margin-bottom:6px">DISPONIBILIDAD</dt><dd style="margin:0;font-size:16px;color:#C9B5BE">[Estado actual]</dd></div>
+          </dl>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <a href="#" onClick="{{ cv }}" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;background:#E63B49;color:#111117;font-size:14px;font-weight:600;transition:background .2s" style-hover="background:#F0606C;color:#111117">Descargar CV <span aria-hidden="true">↓</span></a>
+            <a href="#contacto" onClick="{{ goContact }}" style="display:inline-flex;align-items:center;height:48px;padding:0 22px;border:1px solid rgba(244,241,239,.35);color:#F4F1EF;font-size:14px;transition:border-color .2s" style-hover="color:#F4F1EF;border-color:#E63B49">Contactar</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos" aria-labelledby="t-proj" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,64px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C"><span>02</span><span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(230,59,73,.6),rgba(230,59,73,0))"></span><span style="color:#C9B5BE">PROYECTOS</span></div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(32px,5vw,56px)">
+        <h2 id="t-proj" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,7vw,96px);line-height:.95;letter-spacing:-.01em">Proyectos <em style="color:#E63B49">seleccionados</em></h2>
+        <p style="margin:0;max-width:36ch;font-size:15px;line-height:1.6;color:#C9B5BE">Descripciones, etiquetas y enlaces son provisionales. Sustituye las vistas previas por capturas reales.</p>
+      </div>
+      <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+        <article data-reveal="1" onMouseEnter="{{ p.enter }}" onMouseLeave="{{ p.leave }}" aria-labelledby="{{ p.hid }}" style="display:flex;flex-wrap:wrap;flex-direction:{{ p.dir }};gap:clamp(28px,5vw,72px);align-items:center;padding:clamp(36px,5vw,64px) 0;border-top:1px solid rgba(230,59,73,.22)">
+          <div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;gap:14px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.14em;color:#C9B5BE"><span style="color:#F0606C">{{ p.num }} / 04</span><span>{{ p.kind }}</span></div>
+            <div>
+              <h3 id="{{ p.hid }}" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(40px,5.4vw,76px);line-height:.95;letter-spacing:-.01em;text-wrap:balance">{{ p.title }}</h3>
+              <div aria-hidden="true" style="height:1px;margin-top:16px;background:rgba(230,59,73,.25)"><div style="height:1px;width:{{ p.lineW }};background:#E63B49;transition:width .6s cubic-bezier(.2,.7,.2,1)"></div></div>
+            </div>
+            <p style="margin:0;font-size:17px;line-height:1.6;color:#C9B5BE;max-width:48ch;text-wrap:pretty">{{ p.desc }}</p>
+            <ul aria-label="Tecnologías" style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="3">
+                <li style="padding:6px 10px;border:1px solid rgba(230,59,73,.4);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.08em;color:#F4F1EF">{{ t }}</li>
+              </sc-for>
+            </ul>
+            <div style="display:flex;flex-wrap:wrap;gap:10px 24px;padding-top:6px">
+              <a href="#" onClick="{{ placeholderLink }}" aria-label="{{ p.ghLabel }}" style="display:inline-flex;align-items:center;gap:8px;padding-bottom:4px;border-bottom:1px solid #E63B49;font-size:14px;font-weight:500;color:#F4F1EF" style-hover="color:#F0606C">GitHub <span aria-hidden="true">↗</span></a>
+              <a href="#" onClick="{{ placeholderLink }}" aria-label="{{ p.demoAria }}" style="display:inline-flex;align-items:center;gap:8px;padding-bottom:4px;border-bottom:1px solid rgba(244,241,239,.35);font-size:14px;font-weight:500;color:#F4F1EF" style-hover="color:#F0606C">{{ p.demo }} <span aria-hidden="true">↗</span></a>
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;color:#C9B5BE;align-self:center">[ENLACES PENDIENTES]</span>
+            </div>
+          </div>
+          <div style="flex:1.35 1 420px;min-width:0;perspective:1400px">
+            <div style="position:relative;aspect-ratio:16/10;transform:{{ p.pt }};transition:transform .7s cubic-bezier(.2,.7,.2,1),box-shadow .7s,border-color .4s;border:1px solid {{ p.border }};background-color:#160D13;background-image:repeating-linear-gradient(135deg,rgba(230,59,73,.07) 0 2px,transparent 2px 14px);box-shadow:{{ p.shadow }}">
+              <div style="position:absolute;left:0;right:0;top:0;height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;border-bottom:1px solid rgba(230,59,73,.25);background:rgba(17,17,23,.7);font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.14em;color:#C9B5BE"><span>VISTA PREVIA · {{ p.num }}</span><span style="display:flex;gap:6px"><span style="width:6px;height:6px;border:1px solid #E63B49"></span><span style="width:6px;height:6px;border:1px solid #E63B49"></span><span style="width:6px;height:6px;background:#E63B49"></span></span></div>
+              <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:18px;height:18px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+              <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+              <div style="position:absolute;inset:34px 0 0 0;display:grid;place-items:center;padding:20px;text-align:center"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">{{ p.previewLabel }}</span></div>
+            </div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </section>
+
+  <section id="stack" ref="{{ r.tech }}" aria-labelledby="t-stack" style="position:relative;padding:clamp(72px,9vw,120px) clamp(20px,5vw,64px);background:#111117;overflow:hidden;border-top:1px solid rgba(230,59,73,.22);border-bottom:1px solid rgba(230,59,73,.22)">
+    <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(230,59,73,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(230,59,73,.06) 1px,transparent 1px);background-size:64px 64px"></div>
+    <div style="position:relative;max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C"><span>03</span><span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(230,59,73,.6),rgba(230,59,73,0))"></span><span style="color:#C9B5BE">STACK TECNOLÓGICO</span></div>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(32px,4vw,56px);align-items:center">
+        <div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:28px">
+          <h2 id="t-stack" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,6vw,88px);line-height:.95;letter-spacing:-.01em">Herramientas <em style="color:#E63B49">en uso</em></h2>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#C9B5BE;max-width:42ch">Pasa el cursor o selecciona una tecla para ver los detalles. Lista provisional y editable.</p>
+          <div aria-live="polite" style="position:relative;padding:24px 26px 26px;border:1px solid rgba(230,59,73,.5);background:linear-gradient(180deg,rgba(230,59,73,.08),rgba(230,59,73,0))">
+            <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+            <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+            <div style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span style="color:#F0606C">{{ selTech.cat }}</span><span>{{ selTech.idx }} / {{ selTech.total }}</span></div>
+            <div style="display:flex;align-items:center;gap:16px;margin-top:18px">
+              <span aria-hidden="true" style="width:18px;height:18px;flex:none;background:{{ selTech.top }};box-shadow:0 0 0 1px rgba(244,241,239,.3)"></span>
+              <span style="font-family:'Instrument Serif',serif;font-size:clamp(40px,4.5vw,56px);line-height:1">{{ selTech.name }}</span>
+            </div>
+            <p style="margin:14px 0 0;font-size:16px;line-height:1.6;color:#C9B5BE;min-height:3.2em">{{ selTech.desc }}</p>
+          </div>
+        </div>
+        <div style="flex:1.4 1 460px;min-width:0;height:{{ techH }}px;display:grid;place-items:center;perspective:1700px">
+          <div ref="{{ r.techStage }}" style="transform-style:preserve-3d;transform:rotateX(54deg) rotateZ(45deg)">
+            <div role="group" aria-label="Tecnologías" style="position:relative;display:grid;grid-template-columns:repeat(4,104px);gap:18px;padding:24px;transform-style:preserve-3d;background:#1C1017;border:1px solid rgba(230,59,73,.45);box-shadow:0 0 0 8px rgba(230,59,73,.05)">
+              <sc-for list="{{ techs }}" as="k" hint-placeholder-count="12">
+                <button type="button" onClick="{{ k.select }}" onMouseEnter="{{ k.enter }}" onMouseLeave="{{ k.leave }}" onFocus="{{ k.enter }}" onBlur="{{ k.leave }}" aria-pressed="{{ k.pressed }}" aria-label="{{ k.name }}" style="position:relative;width:104px;height:104px;padding:0;border:0;background:transparent;cursor:pointer;transform-style:preserve-3d;transform:translateZ({{ k.lift }}px);transition:transform .38s cubic-bezier(.2,.8,.2,1)">
+                  <span aria-hidden="true" style="position:absolute;inset:4px;background:rgba(8,4,6,{{ k.shadowOp }});filter:blur({{ k.blur }}px);transform:translateZ({{ k.neg }}px);transition:transform .38s cubic-bezier(.2,.8,.2,1),filter .38s"></span>
+                  <span aria-hidden="true" style="position:absolute;left:0;bottom:0;width:104px;height:22px;transform-origin:50% 100%;transform:rotateX(-90deg);background:{{ k.side1 }}"></span>
+                  <span aria-hidden="true" style="position:absolute;right:0;top:0;width:22px;height:104px;transform-origin:100% 50%;transform:rotateY(90deg);background:{{ k.side2 }}"></span>
+                  <span aria-hidden="true" style="position:absolute;inset:0;transform:translateZ(22px);background:{{ k.top }};box-shadow:{{ k.ring }};display:grid;place-items:center;transition:box-shadow .3s">
+                    <span style="width:46px;height:46px;background:{{ k.ink }};-webkit-mask:url({{ k.icon }}) center / contain no-repeat;mask:url({{ k.icon }}) center / contain no-repeat"></span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trayectoria" aria-labelledby="t-exp" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,64px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C"><span>04</span><span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(230,59,73,.6),rgba(230,59,73,0))"></span><span style="color:#C9B5BE">TRAYECTORIA</span></div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(40px,6vw,72px)">
+        <h2 id="t-exp" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,7vw,96px);line-height:.95;letter-spacing:-.01em">Formación y <em style="color:#E63B49">experiencia</em></h2>
+        <div role="group" aria-label="Filtrar trayectoria" style="display:flex;border:1px solid rgba(230,59,73,.45)">
+          <sc-for list="{{ tlTabs }}" as="tb" hint-placeholder-count="3">
+            <button type="button" onClick="{{ tb.go }}" aria-pressed="{{ tb.pressed }}" style="height:40px;padding:0 16px;border:0;background:{{ tb.bg }};color:{{ tb.color }};font-size:13px;font-weight:500;cursor:pointer;transition:background .2s,color .2s">{{ tb.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <ol style="list-style:none;margin:0;padding:0">
+        <sc-for list="{{ timeline }}" as="e" hint-placeholder-count="4">
+          <li style="display:grid;grid-template-columns:minmax(76px,200px) 1px minmax(0,1fr);gap:clamp(16px,3.5vw,48px)">
+            <div style="padding-top:2px;text-align:right;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.08em;color:#C9B5BE;overflow-wrap:anywhere">{{ e.date }}</div>
+            <div style="position:relative;background:rgba(230,59,73,.35)"><span aria-hidden="true" style="position:absolute;top:4px;left:-6px;width:13px;height:13px;transform:rotate(45deg);border:1px solid #E63B49;background:#25151E"></span></div>
+            <div style="padding-bottom:clamp(40px,5vw,64px);display:flex;flex-direction:column;gap:10px">
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.16em;color:#F0606C">{{ e.typeLabel }}</span>
+              <h3 style="margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:500;line-height:1.2;letter-spacing:-.01em">{{ e.title }}</h3>
+              <p style="margin:0;font-size:16px;color:#F4F1EF;opacity:.85">{{ e.org }}</p>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#C9B5BE;max-width:60ch">{{ e.desc }}</p>
+            </div>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+  </section>
+
+  <section id="testimonios" aria-labelledby="t-test" style="padding:clamp(72px,9vw,120px) clamp(20px,5vw,64px) clamp(96px,12vw,160px)">
+    <div style="max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C"><span>05</span><span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(230,59,73,.6),rgba(230,59,73,0))"></span><span style="color:#C9B5BE">TESTIMONIOS</span></div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(40px,6vw,72px)">
+        <h2 id="t-test" style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,7vw,96px);line-height:.95;letter-spacing:-.01em">Lo que <em style="color:#E63B49">dicen</em></h2>
+        <p style="margin:0;max-width:38ch;font-size:15px;line-height:1.6;color:#C9B5BE">Contenido de muestra. Reemplázalo por testimonios reales con autorización de cada persona.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+        <figure data-reveal="1" style="flex:1 1 290px;min-width:0;margin:0;position:relative;padding:30px;border:1px solid rgba(230,59,73,.4);background:linear-gradient(180deg,rgba(230,59,73,.07),rgba(230,59,73,0));display:flex;flex-direction:column;gap:20px;min-height:360px">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <div style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span style="color:#F0606C">MUESTRA 01</span><span>CONTENIDO DE EJEMPLO</span></div>
+          <span aria-hidden="true" style="font-family:'Instrument Serif',serif;font-size:80px;line-height:.6;height:36px;color:#E63B49">“</span>
+          <blockquote style="margin:0;font-family:'Instrument Serif',serif;font-size:25px;line-height:1.25;text-wrap:pretty">Testimonio de ejemplo. Aquí irá la opinión de un docente o mentor sobre tu forma de trabajar.</blockquote>
+          <figcaption style="display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:20px;border-top:1px solid rgba(230,59,73,.2)"><span aria-hidden="true" style="width:44px;height:44px;flex:none;border:1px solid rgba(230,59,73,.4);background-image:repeating-linear-gradient(135deg,rgba(230,59,73,.12) 0 2px,transparent 2px 8px)"></span><span style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px;font-weight:500">[Nombre de la persona]</strong><span style="font-size:13px;color:#C9B5BE">[Docente · Institución]</span></span></figcaption>
+        </figure>
+        <figure data-reveal="1" style="flex:1 1 290px;min-width:0;margin:clamp(0px,4vw,56px) 0 0;position:relative;padding:30px;border:1px solid rgba(230,59,73,.4);background:linear-gradient(180deg,rgba(230,59,73,.07),rgba(230,59,73,0));display:flex;flex-direction:column;gap:20px;min-height:360px">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <div style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span style="color:#F0606C">MUESTRA 02</span><span>CONTENIDO DE EJEMPLO</span></div>
+          <span aria-hidden="true" style="font-family:'Instrument Serif',serif;font-size:80px;line-height:.6;height:36px;color:#E63B49">“</span>
+          <blockquote style="margin:0;font-family:'Instrument Serif',serif;font-size:25px;line-height:1.25;text-wrap:pretty">Testimonio de ejemplo. Espacio para un compañero de equipo que haya colaborado contigo en un proyecto.</blockquote>
+          <figcaption style="display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:20px;border-top:1px solid rgba(230,59,73,.2)"><span aria-hidden="true" style="width:44px;height:44px;flex:none;border:1px solid rgba(230,59,73,.4);background-image:repeating-linear-gradient(135deg,rgba(230,59,73,.12) 0 2px,transparent 2px 8px)"></span><span style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px;font-weight:500">[Nombre de la persona]</strong><span style="font-size:13px;color:#C9B5BE">[Compañero de proyecto]</span></span></figcaption>
+        </figure>
+        <figure data-reveal="1" style="flex:1 1 290px;min-width:0;margin:clamp(0px,8vw,112px) 0 0;position:relative;padding:30px;border:1px solid rgba(230,59,73,.4);background:linear-gradient(180deg,rgba(230,59,73,.07),rgba(230,59,73,0));display:flex;flex-direction:column;gap:20px;min-height:360px">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <div style="display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE"><span style="color:#F0606C">MUESTRA 03</span><span>CONTENIDO DE EJEMPLO</span></div>
+          <span aria-hidden="true" style="font-family:'Instrument Serif',serif;font-size:80px;line-height:.6;height:36px;color:#E63B49">“</span>
+          <blockquote style="margin:0;font-family:'Instrument Serif',serif;font-size:25px;line-height:1.25;text-wrap:pretty">Testimonio de ejemplo. Espacio para un cliente o usuario que haya probado alguno de tus proyectos.</blockquote>
+          <figcaption style="display:flex;align-items:center;gap:14px;margin-top:auto;padding-top:20px;border-top:1px solid rgba(230,59,73,.2)"><span aria-hidden="true" style="width:44px;height:44px;flex:none;border:1px solid rgba(230,59,73,.4);background-image:repeating-linear-gradient(135deg,rgba(230,59,73,.12) 0 2px,transparent 2px 8px)"></span><span style="display:flex;flex-direction:column;gap:2px"><strong style="font-size:15px;font-weight:500">[Nombre de la persona]</strong><span style="font-size:13px;color:#C9B5BE">[Cliente o usuario]</span></span></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" aria-labelledby="t-contact" style="position:relative;padding:clamp(88px,11vw,150px) clamp(20px,5vw,64px);background:#111117;border-top:1px solid rgba(230,59,73,.3);overflow:hidden">
+    <div aria-hidden="true" style="position:absolute;left:50%;top:0;width:1px;height:100%;background:linear-gradient(180deg,rgba(230,59,73,.35),transparent 70%)"></div>
+    <div style="position:relative;max-width:1240px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#F0606C"><span>06</span><span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(230,59,73,.6),rgba(230,59,73,0))"></span><span style="color:#C9B5BE">CONTACTO</span></div>
+      <h2 id="t-contact" style="margin:0 0 clamp(48px,7vw,88px);font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(52px,9vw,140px);line-height:.9;letter-spacing:-.02em;max-width:12ch">¿Construimos algo <em style="color:#E63B49">interactivo</em>?</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px);align-items:flex-start">
+        <div style="flex:1 1 380px;min-width:0">
+          <a href="mailto:tu.correo@dominio.com" style="display:grid;grid-template-columns:minmax(80px,110px) minmax(0,1fr) auto;align-items:center;gap:16px;padding:24px 0;border-top:1px solid rgba(230,59,73,.25);border-bottom:1px solid rgba(230,59,73,.25);color:#F4F1EF;transition:border-color .2s" style-hover="color:#F4F1EF;border-bottom-color:#E63B49"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">CORREO</span><span style="font-size:clamp(18px,2.2vw,26px);overflow-wrap:anywhere">tu.correo@dominio.com</span><span aria-hidden="true" style="color:#F0606C;font-size:20px">↗</span></a>
+          <a href="#" onClick="{{ placeholderLink }}" aria-label="GitHub, enlace pendiente" style="display:grid;grid-template-columns:minmax(80px,110px) minmax(0,1fr) auto;align-items:center;gap:16px;padding:24px 0;border-bottom:1px solid rgba(230,59,73,.25);color:#F4F1EF;transition:border-color .2s" style-hover="color:#F4F1EF;border-bottom-color:#E63B49"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">GITHUB</span><span style="font-size:clamp(18px,2.2vw,26px);overflow-wrap:anywhere">github.com/[usuario]</span><span aria-hidden="true" style="color:#F0606C;font-size:20px">↗</span></a>
+          <a href="#" onClick="{{ placeholderLink }}" aria-label="LinkedIn, enlace pendiente" style="display:grid;grid-template-columns:minmax(80px,110px) minmax(0,1fr) auto;align-items:center;gap:16px;padding:24px 0;border-bottom:1px solid rgba(230,59,73,.25);color:#F4F1EF;transition:border-color .2s" style-hover="color:#F4F1EF;border-bottom-color:#E63B49"><span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">LINKEDIN</span><span style="font-size:clamp(18px,2.2vw,26px);overflow-wrap:anywhere">linkedin.com/in/[usuario]</span><span aria-hidden="true" style="color:#F0606C;font-size:20px">↗</span></a>
+          <button type="button" onClick="{{ copyEmail }}" style="margin-top:24px;height:44px;padding:0 18px;background:transparent;border:1px solid rgba(244,241,239,.35);color:#F4F1EF;font-size:13px;cursor:pointer;transition:border-color .2s" style-hover="border-color:#E63B49">Copiar correo</button>
+        </div>
+        <form onSubmit="{{ onSubmit }}" aria-label="Formulario de contacto" style="flex:1 1 380px;min-width:0;position:relative;padding:clamp(24px,3vw,36px);border:1px solid rgba(230,59,73,.5);background:linear-gradient(180deg,rgba(230,59,73,.07),rgba(230,59,73,0))">
+          <span aria-hidden="true" style="position:absolute;top:-2px;left:-2px;width:16px;height:16px;border-top:2px solid #E63B49;border-left:2px solid #E63B49"></span>
+          <span aria-hidden="true" style="position:absolute;bottom:-2px;right:-2px;width:16px;height:16px;border-bottom:2px solid #E63B49;border-right:2px solid #E63B49"></span>
+          <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:24px">
+              <div style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C">MENSAJE DIRECTO</div>
+              <label style="display:flex;flex-direction:column;gap:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">NOMBRE<input name="nombre" required="" autocomplete="name" placeholder="Tu nombre" style="height:46px;padding:0;background:transparent;border:0;border-bottom:1px solid rgba(201,181,190,.4);color:#F4F1EF;font-family:'Geist',sans-serif;font-size:16px;letter-spacing:0;outline:none" style-focus="border-bottom-color:#E63B49"></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">CORREO<input type="email" name="correo" required="" autocomplete="email" placeholder="tu@correo.com" style="height:46px;padding:0;background:transparent;border:0;border-bottom:1px solid rgba(201,181,190,.4);color:#F4F1EF;font-family:'Geist',sans-serif;font-size:16px;letter-spacing:0;outline:none" style-focus="border-bottom-color:#E63B49"></label>
+              <label style="display:flex;flex-direction:column;gap:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#C9B5BE">MENSAJE<textarea name="mensaje" required="" rows="4" placeholder="Cuéntame sobre tu idea o proyecto" style="padding:12px 0;background:transparent;border:0;border-bottom:1px solid rgba(201,181,190,.4);color:#F4F1EF;font-family:'Geist',sans-serif;font-size:16px;letter-spacing:0;line-height:1.5;resize:vertical;outline:none" style-focus="border-bottom-color:#E63B49"></textarea></label>
+              <button type="submit" style="align-self:flex-start;display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;background:#E63B49;border:0;color:#111117;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s" style-hover="background:#F0606C">Enviar mensaje <span aria-hidden="true">→</span></button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="display:flex;flex-direction:column;gap:16px;min-height:300px;justify-content:center">
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C">TRANSMISIÓN SIMULADA</span>
+              <p style="margin:0;font-family:'Instrument Serif',serif;font-size:36px;line-height:1.1">Gracias por escribir.</p>
+              <p style="margin:0;font-size:15px;line-height:1.6;color:#C9B5BE">Este formulario es un prototipo: en la versión final se conectará a un servicio de envío.</p>
+              <button type="button" onClick="{{ resetForm }}" style="align-self:flex-start;height:44px;padding:0 18px;background:transparent;border:1px solid rgba(244,241,239,.35);color:#F4F1EF;font-size:13px;cursor:pointer" style-hover="border-color:#E63B49">Escribir otro mensaje</button>
+            </div>
+          </sc-if>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer style="position:relative;background:#111117;padding:clamp(48px,6vw,80px) clamp(20px,5vw,64px) 32px;border-top:1px solid rgba(230,59,73,.22);overflow:hidden">
+    <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:48px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:40px">
+        <div style="display:flex;flex-direction:column;gap:12px;max-width:320px">
+          <span style="width:40px;height:40px;border:1px solid #E63B49;display:grid;place-items:center;font-family:'Geist Mono',monospace;font-size:13px;color:#F0606C">JP</span>
+          <span style="font-size:18px;font-weight:500">Juliana Peñafiel</span>
+          <span style="font-size:14px;line-height:1.6;color:#C9B5BE">Desarrolladora de software · Experiencias digitales interactivas</span>
+        </div>
+        <nav aria-label="Pie de página" style="display:flex;flex-wrap:wrap;gap:48px">
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+            <li style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C;margin-bottom:4px">SECCIONES</li>
+            <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="7">
+              <li><a href="#{{ n.id }}" onClick="{{ n.go }}" style="font-size:14px;color:#C9B5BE" style-hover="color:#F4F1EF">{{ n.label }}</a></li>
+            </sc-for>
+          </ul>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+            <li style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#F0606C;margin-bottom:4px">REDES</li>
+            <li><a href="mailto:tu.correo@dominio.com" style="font-size:14px;color:#C9B5BE" style-hover="color:#F4F1EF">Correo</a></li>
+            <li><a href="#" onClick="{{ placeholderLink }}" style="font-size:14px;color:#C9B5BE" style-hover="color:#F4F1EF">GitHub</a></li>
+            <li><a href="#" onClick="{{ placeholderLink }}" style="font-size:14px;color:#C9B5BE" style-hover="color:#F4F1EF">LinkedIn</a></li>
+            <li><a href="#" onClick="{{ cv }}" style="font-size:14px;color:#C9B5BE" style-hover="color:#F4F1EF">Descargar CV</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div aria-hidden="true" style="font-family:'Instrument Serif',serif;font-size:clamp(56px,13vw,200px);line-height:.85;letter-spacing:-.02em;color:transparent;-webkit-text-stroke:1px rgba(230,59,73,.55);white-space:nowrap">Juliana Peñafiel</div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding-top:20px;border-top:1px solid rgba(230,59,73,.22);font-size:13px;color:#C9B5BE">
+        <span>© 2026 Juliana Peñafiel. Todos los derechos reservados.</span>
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.12em">PROTOTIPO DE DISEÑO v0.1 · CONTENIDO PROVISIONAL</span>
+        <a href="#inicio" onClick="{{ goTop }}" style="font-size:13px;color:#F4F1EF;border-bottom:1px solid #E63B49;padding-bottom:2px" style-hover="color:#F0606C">Volver arriba ↑</a>
+      </div>
+    </div>
+  </footer>
+</main>
+
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:90;max-width:calc(100vw - 32px);padding:14px 20px;background:#111117;border:1px solid #E63B49;box-shadow:0 20px 60px rgba(0,0,0,.5);font-size:14px;color:#F4F1EF;display:flex;gap:12px;align-items:center"><span style="width:7px;height:7px;flex:none;background:#E63B49;transform:rotate(45deg)"></span>{{ toast }}</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;introLength&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Corta&quot;,&quot;Estándar&quot;,&quot;Larga&quot;],&quot;default&quot;:&quot;Estándar&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Nivel 01&quot;},&quot;showHud&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Nivel 01&quot;},&quot;techTilt&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:40,&quot;max&quot;:64,&quot;step&quot;:1,&quot;unit&quot;:&quot;deg&quot;,&quot;default&quot;:54,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Stack&quot;}}">
+const SI = 'https://cdn.jsdelivr.net/npm/simple-icons@13/icons/';
+const TECH = [
+  { name: 'React', cat: 'LIBRERÍA DE INTERFACES', top: '#61DAFB', ink: '#0B2530', icon: SI + 'react.svg', desc: 'Componentes declarativos para construir interfaces interactivas y reutilizables.' },
+  { name: 'TypeScript', cat: 'LENGUAJE', top: '#3178C6', ink: '#FFFFFF', icon: SI + 'typescript.svg', desc: 'Tipado estático sobre JavaScript para código más seguro y mantenible.' },
+  { name: 'JavaScript', cat: 'LENGUAJE', top: '#F7DF1E', ink: '#1A1A1A', icon: SI + 'javascript.svg', desc: 'La base de la web: lógica, interacción y animación en el navegador.' },
+  { name: 'Next.js', cat: 'FRAMEWORK WEB', top: '#F4F1EF', ink: '#111117', icon: SI + 'nextdotjs.svg', desc: 'Renderizado híbrido, rutas y despliegue optimizado para aplicaciones React.' },
+  { name: 'Python', cat: 'LENGUAJE', top: '#3776AB', ink: '#FFD43B', icon: SI + 'python.svg', desc: 'Automatización, prototipos de IA y procesamiento de datos.' },
+  { name: 'Java', cat: 'LENGUAJE', top: '#E76F00', ink: '#FFFFFF', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-plain.svg', desc: 'Programación orientada a objetos y aplicaciones multiplataforma.' },
+  { name: 'PostgreSQL', cat: 'BASE DE DATOS', top: '#4169E1', ink: '#FFFFFF', icon: SI + 'postgresql.svg', desc: 'Base de datos relacional para modelar y consultar información estructurada.' },
+  { name: 'Docker', cat: 'INFRAESTRUCTURA', top: '#2496ED', ink: '#FFFFFF', icon: SI + 'docker.svg', desc: 'Contenedores para entornos reproducibles de desarrollo y despliegue.' },
+  { name: 'Tailwind CSS', cat: 'ESTILOS', top: '#06B6D4', ink: '#FFFFFF', icon: SI + 'tailwindcss.svg', desc: 'Utilidades CSS para sistemas visuales consistentes y rápidos de iterar.' },
+  { name: 'Unity', cat: 'MOTOR 3D / XR', top: '#2A2A30', ink: '#FFFFFF', icon: SI + 'unity.svg', desc: 'Simulaciones, experiencias de realidad virtual y prototipos 3D interactivos.' },
+  { name: 'Godot', cat: 'MOTOR DE JUEGOS', top: '#478CBF', ink: '#FFFFFF', icon: SI + 'godotengine.svg', desc: 'Motor libre para experiencias interactivas ligeras en 2D y 3D.' },
+  { name: 'Git', cat: 'CONTROL DE VERSIONES', top: '#F05032', ink: '#FFFFFF', icon: SI + 'git.svg', desc: 'Historial, ramas y colaboración sobre el código.' }
+];
+const PROJECTS = [
+  { title: 'Ares', kind: 'APLICACIÓN DE ESCRITORIO', desc: 'Asistente de productividad con inteligencia artificial para escritorio. [Amplía: problema que resuelve, funciones principales y tu rol.]', tags: ['IA', 'Escritorio', '[Stack]'], demo: 'Demo', previewLabel: '[ CAPTURA · ARES · 16:10 ]' },
+  { title: 'BookShelf', kind: 'APLICACIÓN MÓVIL', desc: 'Biblioteca digital móvil con identificación de libros asistida por IA. [Amplía con detalles del proyecto.]', tags: ['Móvil', 'IA', 'Visión por computadora'], demo: 'Demo', previewLabel: '[ CAPTURA · BOOKSHELF · PANTALLAS MÓVILES ]' },
+  { title: 'VR Coffee Roasting Simulator', kind: 'SIMULADOR VR', desc: 'Simulador inmersivo para la formación en el tostado de café. [Amplía con detalles del proyecto.]', tags: ['Unity', 'Realidad virtual', '[Stack]'], demo: 'Video demo', previewLabel: '[ CAPTURA · ESCENA VR ]' },
+  { title: 'Wear OS Presentation Controller', kind: 'APP PARA SMARTWATCH', desc: 'Aplicación para smartwatch que permite controlar presentaciones desde la muñeca. [Amplía con detalles del proyecto.]', tags: ['Wear OS', 'Android', '[Stack]'], demo: 'Video demo', previewLabel: '[ CAPTURA · RELOJ + PRESENTACIÓN ]' }
+];
+const TIMELINE = [
+  { type: 'academica', date: '[AAAA — Actualidad]', title: '[Programa académico]', org: '[Institución educativa]', desc: '[Describe el enfoque del programa, cursos relevantes o proyectos destacados.]' },
+  { type: 'profesional', date: '[AAAA — AAAA]', title: '[Rol o cargo]', org: '[Organización / Empresa]', desc: '[Describe responsabilidades y logros verificables.]' },
+  { type: 'academica', date: '[AAAA]', title: '[Curso o formación complementaria]', org: '[Entidad]', desc: '[Opcional: elimina esta entrada si no aplica.]' },
+  { type: 'profesional', date: '[AAAA — AAAA]', title: '[Proyecto, práctica o voluntariado]', org: '[Organización]', desc: '[Describe tu participación y resultados.]' }
+];
+const NAV = [['inicio', 'Inicio'], ['sobre-mi', 'Sobre mí'], ['proyectos', 'Proyectos'], ['stack', 'Stack'], ['trayectoria', 'Trayectoria'], ['testimonios', 'Testimonios'], ['contacto', 'Contacto']];
+const PANELS = [
+  { x: -70, y: -40, z: 0, ry: 0, dx: -0.12, up: 1.0, del: 120 },
+  { x: 450, y: -150, z: -140, ry: -20, dx: 1, up: 0.45, del: 420 },
+  { x: -540, y: 50, z: -200, ry: 22, dx: -1, up: 0.35, del: 580 }
+];
+const cl = v => (v < 0 ? 0 : v > 1 ? 1 : v);
+const ease = t => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+const shade = (hex, f) => {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgb(${Math.round(((n >> 16) & 255) * f)},${Math.round(((n >> 8) & 255) * f)},${Math.round((n & 255) * f)})`;
+};
+
+class Component extends DCLogic {
+  r = {
+    level1: React.createRef(), scene: React.createRef(), p0: React.createRef(), p1: React.createRef(), p2: React.createRef(),
+    screen: React.createRef(), screenGrid: React.createRef(), screenA: React.createRef(), screenB: React.createRef(),
+    floor: React.createRef(), hint: React.createRef(), pct: React.createRef(), tech: React.createRef(),
+    techStage: React.createRef(), bar: React.createRef(), screenM: React.createRef()
+  };
+  state = { vw: window.innerWidth, vh: window.innerHeight, reduced: false, level: 1, active: 'inicio', menu: false, sel: 0, hov: -1, proj: -1, tl: 'todo', sent: false, toast: '' };
+  mx = 0; my = 0; tmx = 0; tmy = 0; raf = null; t0 = 0;
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    this.t0 = performance.now();
+    this.onScroll = () => this.kick();
+    this.onResize = () => { this.setState({ vw: window.innerWidth, vh: window.innerHeight }); this.kick(); };
+    this.onMove = e => { this.tmx = e.clientX / window.innerWidth - 0.5; this.tmy = e.clientY / window.innerHeight - 0.5; this.kick(); };
+    this.onMq = () => this.setState({ reduced: this.mq.matches });
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('mousemove', this.onMove, { passive: true });
+    this.mq.addEventListener && this.mq.addEventListener('change', this.onMq);
+    this.setState({ reduced: this.mq.matches });
+    this.kick();
+    this.revealT = setTimeout(() => this.setupReveal(), 300);
+  }
+  componentDidUpdate() { this.kick(); }
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('mousemove', this.onMove);
+    this.mq && this.mq.removeEventListener && this.mq.removeEventListener('change', this.onMq);
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this.io) this.io.disconnect();
+    clearTimeout(this.revealT); clearTimeout(this.toastT);
+  }
+
+  isSpatial() { return !this.state.reduced && this.state.vw >= 900 && this.state.vh >= 560; }
+  introH() { const v = this.props.introLength; return v === 'Corta' ? '260vh' : v === 'Larga' ? '440vh' : '340vh'; }
+  kick() { if (!this.raf) this.raf = requestAnimationFrame(this.frame); }
+
+  setupReveal() {
+    if (this.state.reduced || !('IntersectionObserver' in window)) return;
+    const vh = window.innerHeight;
+    this.io = new IntersectionObserver(entries => entries.forEach(en => {
+      if (en.isIntersecting) { en.target.style.opacity = '1'; en.target.style.transform = 'none'; this.io.unobserve(en.target); }
+    }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      if (el.getBoundingClientRect().top < vh) return;
+      el.style.transition = 'opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1)';
+      el.style.opacity = '0'; el.style.transform = 'translateY(36px)';
+      this.io.observe(el);
+    });
+  }
+
+  frame = () => {
+    this.raf = null;
+    const vw = window.innerWidth, vh = window.innerHeight, R = this.r;
+    let more = false, level = 1;
+    const L = R.level1.current;
+    if (this.isSpatial() && L) {
+      const want = this.introH();
+      if (L.style.height !== want) L.style.height = want;
+      const rect = L.getBoundingClientRect();
+      const p = cl(-rect.top / Math.max(1, L.offsetHeight - vh));
+      const t = performance.now() - this.t0;
+      if (t < 2400) more = true;
+      this.mx += (this.tmx - this.mx) * 0.07; this.my += (this.tmy - this.my) * 0.07;
+      if (Math.abs(this.tmx - this.mx) > 0.002 || Math.abs(this.tmy - this.my) > 0.002) more = true;
+      const a = ease(cl(p / 0.42)), b = ease(cl((p - 0.1) / 0.5)), c = ease(cl((p - 0.56) / 0.36));
+      const s = Math.min(1, vw / 1500, vh / 900), calm = 1 - a;
+      if (R.scene.current) R.scene.current.style.transform = `scale(${s}) rotateX(${(-this.my * 5 * calm + b * 5).toFixed(3)}deg) rotateY(${(this.mx * 7 * calm).toFixed(3)}deg)`;
+      [R.p0, R.p1, R.p2].forEach((ref, i) => {
+        const el = ref.current; if (!el) return;
+        const P = PANELS[i], e = ease(cl((t - P.del) / 950));
+        const x = P.x + P.dx * a * vw * 0.55 / s, y = P.y - P.up * a * vh * 0.6 / s + (1 - e) * 40, z = P.z - (1 - e) * 320 + a * 80;
+        el.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,${z.toFixed(1)}px) rotateY(${(P.ry + P.dx * a * 14).toFixed(2)}deg)`;
+        el.style.opacity = (e * (1 - cl(a * 1.35))).toFixed(3);
+        el.style.visibility = a > 0.98 ? 'hidden' : 'visible';
+      });
+      if (R.floor.current) {
+        R.floor.current.style.transform = `translateX(-50%) translateY(${(-b * vh * 0.22).toFixed(1)}px) rotateX(${(80 - b * 6).toFixed(2)}deg)`;
+        R.floor.current.style.opacity = (1 - c).toFixed(3);
+      }
+      const S = R.screen.current;
+      if (S) {
+        const es = ease(cl((t - 700) / 1000));
+        const W0 = Math.min(1180, vw * 0.84), H0 = W0 * 0.42;
+        S.style.width = (W0 + (vw - W0) * c).toFixed(1) + 'px';
+        S.style.height = (H0 + (vh - H0) * c).toFixed(1) + 'px';
+        S.style.transform = `translate(-50%,-50%) translate3d(0,${(vh * 0.33 * (1 - b)).toFixed(1)}px,0) rotateX(${(74 * (1 - b)).toFixed(2)}deg)`;
+        S.style.opacity = es.toFixed(3);
+        S.style.backgroundColor = `rgb(${Math.round(17 + 20 * c)},${Math.round(17 + 4 * c)},${Math.round(23 + 7 * c)})`;
+        S.style.borderColor = `rgba(230,59,73,${(0.75 * (1 - c)).toFixed(3)})`;
+        S.style.boxShadow = `0 0 ${Math.round(90 * (1 - c))}px rgba(230,59,73,${(0.28 * (1 - c)).toFixed(3)})`;
+      }
+      if (R.screenGrid.current) R.screenGrid.current.style.opacity = (1 - c).toFixed(3);
+      if (R.screenA.current) R.screenA.current.style.opacity = (1 - cl((c - 0.05) / 0.35)).toFixed(3);
+      if (R.screenB.current) { const q = cl((c - 0.6) / 0.35); R.screenB.current.style.opacity = q.toFixed(3); R.screenB.current.style.transform = `translateY(${((1 - q) * 24).toFixed(1)}px)`; }
+      if (R.hint.current) R.hint.current.style.opacity = (1 - cl(p * 6)).toFixed(3);
+      if (R.pct.current) R.pct.current.textContent = String(Math.round(p * 100)).padStart(3, '0');
+      level = p > 0.94 ? 2 : 1;
+    } else {
+      const hero = document.getElementById('inicio');
+      if (hero) level = hero.getBoundingClientRect().bottom < vh * 0.5 ? 2 : 1;
+      const M = R.screenM.current;
+      if (M && !this.state.reduced) {
+        const q = ease(cl((vh - M.getBoundingClientRect().top) / (vh * 0.7)));
+        M.style.transform = `perspective(900px) rotateX(${(28 * (1 - q)).toFixed(2)}deg) scale(${(0.9 + 0.1 * q).toFixed(3)})`;
+      }
+    }
+    const T = R.tech.current, TS = R.techStage.current;
+    if (T && TS) {
+      const tilt = this.props.techTilt ?? 54;
+      const rect = T.getBoundingClientRect();
+      const tp = this.state.reduced ? 0.5 : cl((vh - rect.top) / (vh + rect.height));
+      TS.style.transform = `scale(${this.techScale || 1}) rotateX(${(tilt - (tp - 0.5) * 12).toFixed(2)}deg) rotateZ(${(45 + (tp - 0.5) * 18).toFixed(2)}deg)`;
+    }
+    if (R.bar.current) {
+      const max = document.documentElement.scrollHeight - vh;
+      R.bar.current.style.transform = `scaleX(${max > 0 ? (window.scrollY / max).toFixed(4) : 0})`;
+    }
+    let active = 'inicio';
+    for (const [id] of NAV) { const el = document.getElementById(id); if (el && el.getBoundingClientRect().top <= vh * 0.35) active = id; }
+    if (level !== this.state.level || active !== this.state.active) this.setState({ level, active });
+    if (more) this.kick();
+  };
+
+  go = id => e => {
+    if (e && e.preventDefault) e.preventDefault();
+    this.setState({ menu: false });
+    const el = id === 'inicio' ? null : document.getElementById(id);
+    const top = el ? el.getBoundingClientRect().top + window.scrollY - 63 : 0;
+    window.scrollTo({ top, behavior: this.state.reduced ? 'auto' : 'smooth' });
+  };
+  showToast(msg) {
+    this.setState({ toast: msg });
+    clearTimeout(this.toastT);
+    this.toastT = setTimeout(() => this.setState({ toast: '' }), 3200);
+  }
+
+  renderVals() {
+    const { vw, reduced, level, active, menu, sel, hov, proj, tl, sent, toast } = this.state;
+    const spatial = this.isSpatial();
+    const navItems = NAV.map(([id, label], i) => ({
+      id, label, num: '0' + i, go: this.go(id),
+      current: active === id ? 'true' : 'false',
+      color: active === id ? '#F4F1EF' : '#C9B5BE',
+      line: active === id ? '#E63B49' : 'transparent'
+    }));
+    const techs = TECH.map((t, i) => {
+      const lift = i === sel ? 34 : i === hov ? 16 : 0;
+      return {
+        ...t, lift, neg: -lift, blur: Math.round(5 + lift * 0.45), shadowOp: (0.6 - lift * 0.007).toFixed(2),
+        side1: shade(t.top, 0.6), side2: shade(t.top, 0.78),
+        ring: i === sel ? 'inset 0 0 0 2px #F4F1EF, 0 0 26px rgba(244,241,239,.28)' : 'inset 0 0 0 1px rgba(255,255,255,.16), inset 0 -8px 14px rgba(0,0,0,.14)',
+        pressed: i === sel ? 'true' : 'false',
+        select: () => this.setState({ sel: i }),
+        enter: () => this.setState({ hov: i }),
+        leave: () => this.setState({ hov: -1 })
+      };
+    });
+    const di = hov >= 0 ? hov : sel;
+    const selTech = { ...TECH[di], idx: String(di + 1).padStart(2, '0'), total: String(TECH.length).padStart(2, '0') };
+    const avail = vw >= 900 ? Math.min(vw * 0.52, 760) : vw - 40;
+    const techScale = Math.min(1, avail / 700);
+    this.techScale = techScale;
+    const projects = PROJECTS.map((p, i) => {
+      const on = proj === i, flip = i % 2 === 1;
+      return {
+        ...p, num: '0' + (i + 1), hid: 'proj-' + i, dir: flip ? 'row-reverse' : 'row',
+        ghLabel: 'Repositorio de ' + p.title + ' en GitHub, enlace pendiente',
+        demoAria: p.demo + ' de ' + p.title + ', enlace pendiente',
+        enter: () => this.setState({ proj: i }), leave: () => this.setState({ proj: -1 }),
+        pt: on && !reduced ? `rotateY(${flip ? 5 : -5}deg) rotateX(2deg) translateZ(28px)` : 'none',
+        border: on ? '#E63B49' : 'rgba(230,59,73,.35)',
+        shadow: on ? '0 40px 90px rgba(0,0,0,.5), 0 0 60px rgba(230,59,73,.2)' : '0 20px 50px rgba(0,0,0,.25)',
+        lineW: on ? '100%' : '18%'
+      };
+    });
+    const tlTabs = [['todo', 'Todo'], ['academica', 'Académica'], ['profesional', 'Profesional']].map(([k, label]) => ({
+      label, pressed: tl === k ? 'true' : 'false',
+      bg: tl === k ? '#E63B49' : 'transparent', color: tl === k ? '#111117' : '#C9B5BE',
+      go: () => this.setState({ tl: k })
+    }));
+    const timeline = TIMELINE.filter(e => tl === 'todo' || e.type === tl).map(e => ({ ...e, typeLabel: e.type === 'academica' ? 'ACADÉMICA' : 'PROFESIONAL' }));
+    const showLinks = vw >= 1180;
+    return {
+      r: this.r, spatial, simple: !spatial, showHud: this.props.showHud ?? true,
+      navItems, showLinks, showMenuBtn: !showLinks, menuOpen: menu && !showLinks,
+      menuLabel: menu ? 'Cerrar' : 'Menú', menuExpanded: menu ? 'true' : 'false',
+      toggleMenu: () => this.setState({ menu: !menu }),
+      levelLabel: level === 1 ? 'NIVEL 01' : 'NIVEL 02', inIntro: level === 1 && vw >= 520,
+      skipIntro: this.go('sobre-mi'), goTop: this.go('inicio'), goAbout: this.go('sobre-mi'),
+      goProjects: this.go('proyectos'), goContact: this.go('contacto'),
+      cv: e => { e.preventDefault(); this.showToast('CV de ejemplo: reemplaza este enlace por tu archivo PDF.'); },
+      placeholderLink: e => { e.preventDefault(); this.showToast('Enlace pendiente: añade la URL real en la implementación.'); },
+      copyEmail: () => { try { navigator.clipboard.writeText('tu.correo@dominio.com').catch(() => {}); } catch (err) {} this.showToast('Correo copiado al portapapeles.'); },
+      onSubmit: e => { e.preventDefault(); this.setState({ sent: true }); },
+      resetForm: () => this.setState({ sent: false }),
+      sent, notSent: !sent, toast, hasToast: !!toast,
+      techs, selTech, techH: Math.round(560 * techScale),
+      projects, tlTabs, timeline
+    };
+  }
+}
+</script>
+</body>
+</html>
