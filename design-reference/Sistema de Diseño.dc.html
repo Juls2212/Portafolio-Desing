@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#202B36;color:#F2F0ED;font-family:'Geist',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#F2F0ED;text-decoration:none}
+a:hover{color:#FF6B78}
+:focus-visible{outline:2px solid #FF6B78;outline-offset:3px}
+</style>
+</helmet>
+<div style="max-width:1240px;margin:0 auto;padding:clamp(40px,6vw,88px) clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:clamp(56px,7vw,96px)">
+  <header style="display:flex;flex-direction:column;gap:16px;border-bottom:1px solid rgba(242,240,237,.16);padding-bottom:32px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">SISTEMA DE DISEÑO · v0.2</span>
+    <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(48px,8vw,112px);line-height:.92">Sala <em>holográfica</em></h1>
+    <p style="margin:0;max-width:60ch;font-size:16px;line-height:1.6;color:#A9B3BE">Referencia visual para la implementación en Next.js + Tailwind. Estilos en línea en el prototipo; trasladar estos valores a tokens de Tailwind.</p>
+    <a href="Portafolio v2.dc.html" style="align-self:flex-start;border-bottom:1px solid #F04454;padding-bottom:3px;font-size:14px">Abrir prototipo →</a>
+  </header>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">01 · COLOR</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px"><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#202B36;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">primary</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#202B36 · azul acero · fondo base</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#121D28;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">deep</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#121D28 · azul abismo · cámaras, contacto, pie</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#343B47;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">surface</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#343B47 · grafito · planos y paneles</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#983F53;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">secondary</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#983F53 · burdeos apagado · detalles</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#F04454;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">accent</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#F04454 · rojo señal · activo, selección, CTA</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#FF6B78;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">accent.text</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#FF6B78 · rojo para texto pequeño (AA)</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#F2F0ED;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">text.primary</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#F2F0ED · blanco frío</span></div><div style="display:flex;flex-direction:column;gap:10px"><div style="height:110px;background:#A9B3BE;border:1px solid rgba(242,240,237,.16)"></div><strong style="font-weight:500;font-size:14px">text.secondary</strong><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">#A9B3BE · gris frío derivado</span></div></div>
+    <p style="margin:0;font-size:14px;line-height:1.6;color:#A9B3BE">Líneas estructurales en blanco frío al 8–20 %. El rojo se reserva para estados activos, selección, CTA y líneas holográficas clave (panel principal, pantalla de acceso, horizonte). Texto sobre rojo: #121D28.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">02 · TIPOGRAFÍA</span>
+    <div style="display:flex;flex-direction:column;border-top:1px solid rgba(242,240,237,.14)">
+      <div style="display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr);gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(242,240,237,.14)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">Display · Instrument Serif 44–140px / .9</span><span style="font-family:'Instrument Serif',serif;font-size:clamp(44px,7vw,96px);line-height:.95">Proyectos <em style="color:#F04454">seleccionados</em></span></div>
+      <div style="display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr);gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(242,240,237,.14)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">Lead · Instrument Serif 24–38px / 1.2</span><span style="font-family:'Instrument Serif',serif;font-size:32px;line-height:1.2">Interfaces que se sienten como lugares.</span></div>
+      <div style="display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr);gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(242,240,237,.14)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">Body · Geist 15–17px / 1.6</span><span style="font-size:17px;line-height:1.6;color:#A9B3BE">Texto de lectura en color secundario, máximo 60 caracteres por línea.</span></div>
+      <div style="display:grid;grid-template-columns:minmax(120px,220px) minmax(0,1fr);gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid rgba(242,240,237,.14)"><span style="font-family:'Geist Mono',monospace;font-size:12px;color:#A9B3BE">Label · Geist Mono 11–12px, +.14em</span><span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">P/01 — PRESENTACIÓN</span></div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">03 · ESPACIADO Y BORDES</span>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:8px;height:8px;background:#F04454"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#A9B3BE">8</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:16px;height:16px;background:#F04454"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#A9B3BE">16</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:24px;height:24px;background:#F04454"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#A9B3BE">24</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:40px;height:40px;background:#F04454"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#A9B3BE">40</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:64px;height:64px;background:#F04454"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#A9B3BE">64</span></div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center"><div style="width:120px;height:120px;background:#F04454"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;color:#A9B3BE">120 · sección</span></div>
+    </div>
+    <p style="margin:0;font-size:14px;line-height:1.6;color:#A9B3BE">Sin esquinas redondeadas. Bordes de 1px en rojo translúcido; esquinas marcadas con escuadras de 2px como firma de los paneles. Secciones: padding vertical clamp(72px, 9vw, 120px), ancho máximo 1240px.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">04 · BOTONES, ENLACES Y ESTADOS</span>
+    <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+      <a href="#" style="display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;background:#F04454;color:#121D28;font-size:14px;font-weight:600" style-hover="background:#FF6B78;color:#121D28">Primario ↓</a>
+      <a href="#" style="display:inline-flex;align-items:center;height:48px;padding:0 22px;border:1px solid rgba(242,240,237,.3);color:#F2F0ED;font-size:14px" style-hover="border-color:#F04454;color:#F2F0ED">Secundario</a>
+      <a href="#" style="display:inline-flex;gap:8px;padding-bottom:4px;border-bottom:1px solid #F04454;font-size:14px;font-weight:500">Enlace ↗</a>
+      <span style="display:inline-flex;align-items:center;height:48px;padding:0 22px;background:#F04454;color:#121D28;font-size:14px;font-weight:600;outline:2px solid #FF6B78;outline-offset:3px">Foco visible</span>
+      <span style="padding:6px 10px;border:1px solid rgba(242,240,237,.16);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.08em">Etiqueta</span>
+    </div>
+    <p style="margin:0;font-size:14px;line-height:1.6;color:#A9B3BE">Hover: aclarar a #FF6B78 o encender el borde rojo, 200 ms. Foco: contorno 2px #FF6B78 con separación de 3px. Navegación: riel vertical con rombos (escritorio) que se expande con hover o foco; control compacto inferior en móvil. Sector activo: rombo rojo relleno.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">05 · COMPONENTES</span>
+    <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start">
+      <div style="flex:1 1 320px;min-width:0;position:relative;padding:22px 26px 26px;background:linear-gradient(180deg,rgba(52,59,71,.72),rgba(32,43,54,.55));border:1px solid rgba(242,240,237,.22)">
+        <span style="position:absolute;top:-2px;left:-2px;width:14px;height:14px;border-top:2px solid #F04454;border-left:2px solid #F04454"></span>
+        <span style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-bottom:2px solid #F04454;border-right:2px solid #F04454"></span>
+        <div style="display:flex;justify-content:space-between;padding-bottom:12px;margin-bottom:16px;border-bottom:1px solid rgba(242,240,237,.14);font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.14em;color:#A9B3BE"><span>P/00 — PANEL HOLOGRÁFICO</span><span style="color:#FF6B78">◇</span></div>
+        <p style="margin:0;font-family:'Instrument Serif',serif;font-size:26px;line-height:1.2">Cabecera mono, contenido editorial, escuadras en esquinas.</p>
+      </div>
+      <div style="flex:0 0 auto;height:220px;width:260px;display:grid;place-items:center;perspective:1200px">
+        <div style="transform-style:preserve-3d;transform:rotateX(54deg) rotateZ(45deg)">
+          <div style="position:relative;width:104px;height:104px;transform-style:preserve-3d;transform:translateZ(20px)">
+            <span style="position:absolute;left:0;bottom:0;width:104px;height:22px;transform-origin:50% 100%;transform:rotateX(-90deg);background:rgb(58,131,151)"></span>
+            <span style="position:absolute;right:0;top:0;width:22px;height:104px;transform-origin:100% 50%;transform:rotateY(90deg);background:rgb(76,170,196)"></span>
+            <span style="position:absolute;inset:0;transform:translateZ(22px);background:#61DAFB;box-shadow:inset 0 0 0 2px #F2F0ED"></span>
+          </div>
+        </div>
+      </div>
+      <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.6;color:#A9B3BE">
+        <strong style="color:#F2F0ED;font-weight:500">Tecla tecnológica</strong>
+        <span>Cara superior: color de marca. Caras laterales: 60 % y 78 % de luminosidad. Profundidad 22px.</span>
+        <span>Reposo 0px · hover +16px · seleccionada +34px con anillo claro. Transición 380 ms.</span>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:24px">
+    <span style="font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.16em;color:#FF6B78">06 · MOVIMIENTO Y RESPONSIVE</span>
+    <ol style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));border-top:1px solid rgba(242,240,237,.14)">
+      <li style="padding:20px 20px 20px 0;border-bottom:1px solid rgba(242,240,237,.14);font-size:14px;line-height:1.6;color:#A9B3BE"><strong style="display:block;color:#F2F0ED;font-weight:500;margin-bottom:6px">Entrada de paneles</strong>Desde Z −320px, escalonado 120–580 ms, 950 ms, ease-in-out cúbico.</li>
+      <li style="padding:20px 20px 20px 0;border-bottom:1px solid rgba(242,240,237,.14);font-size:14px;line-height:1.6;color:#A9B3BE"><strong style="display:block;color:#F2F0ED;font-weight:500;margin-bottom:6px">Transición de nivel</strong>Scroll 0–42 %: paneles se separan. 10–60 %: la pantalla se endereza (74° → 0°). 56–92 %: se expande al viewport.</li>
+      <li style="padding:20px 20px 20px 0;border-bottom:1px solid rgba(242,240,237,.14);font-size:14px;line-height:1.6;color:#A9B3BE"><strong style="display:block;color:#F2F0ED;font-weight:500;margin-bottom:6px">Móvil (&lt; 900px)</strong>Paneles apilados; la pantalla de acceso se endereza al entrar en vista. Proyectos y trayectoria pasan a lista vertical; control de sectores en la parte inferior.</li>
+      <li style="padding:20px 20px 20px 0;border-bottom:1px solid rgba(242,240,237,.14);font-size:14px;line-height:1.6;color:#A9B3BE"><strong style="display:block;color:#F2F0ED;font-weight:500;margin-bottom:6px">Cámara del nivel 02</strong>Un único fondo fijo en retícula gira y se desplaza levemente al cambiar de sector (1.8 s).</li>
+      <li style="padding:20px 20px 20px 0;border-bottom:1px solid rgba(242,240,237,.14);font-size:14px;line-height:1.6;color:#A9B3BE"><strong style="display:block;color:#F2F0ED;font-weight:500;margin-bottom:6px">Movimiento reducido</strong>Se usa la versión simplificada sin cámara, parallax ni revelados; el stack queda estático.</li>
+    </ol>
+  </section>
+</div>
+</x-dc>
+</body>
+</html>
