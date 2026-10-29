@@ -1,0 +1,16 @@
+{
+  "ic_javascript": "6bc3fa6c-fd27-49cb-bed9-5bf4385f1242.svg",
+  "ic_react": "b4fb7bac-2297-41b0-9b0e-b8cdaf109dff.svg",
+  "ic_nextdotjs": "f1761138-6e77-4b78-bfa3-06a469d3389f.svg",
+  "ic_unity": "efd3721d-aa27-4f1d-8f4a-66876647cafd.svg",
+  "ic_java": "71dc3083-9c89-4f8e-8096-997c00a367d5.svg",
+  "ic_postgresql": "3e525df7-d580-4206-abbe-eb7f4a882257.svg",
+  "ic_python": "1a5b4989-d1c3-40fd-8f7a-8a216e1adb23.svg",
+  "ic_git": "cbea0010-f344-48ac-a9e8-63666ed68b44.svg",
+  "ic_typescript": "67705461-7fb4-48c1-9d04-2483a8cde73d.svg",
+  "ic_docker": "60e803f7-f020-4f76-b12b-056d6d3376de.svg",
+  "ic_godotengine": "9786eff9-943c-41c8-8267-b3fdd2171e94.svg",
+  "ic_tailwindcss": "14beca95-6e9d-4cd6-920f-9a4967a0eccd.svg",
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "bc862c81-bb69-4822-9e99-d963752e5250.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "620b0797-73f6-4149-8275-a91643af10b3.js"
+}
